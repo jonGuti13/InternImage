@@ -1,0 +1,12 @@
+El comando para crear el contenedor que me permite trabajar con este repositorio es:
+nvidia-docker run -it --rm -v /media/jon/DATUAK/Jon/phd/Pytorch-AI-tutorials/openmm:/workspace -v /media/jon/DATUAK/Jon/phd_data/:/data --ipc=host nvcr.io/nvidia/pytorch:21.02-py3-jon-internImage
+
+Esta imagen la he creado modificando la original (nvcr.io/nvidia/pytorch:21.02-py3) según lo que pone en la guía de instalación del repositorio.
+Por ello es fundamental activar el entorno adecuado: conda activate internimage
+
+El repositorio ha sido descargado de https://github.com/OpenGVLab/InternImage/tree/master/segmentation
+
+IMPORTANTÍSIMO: Necesito "dar de alta" nuestra base de datos en los registros de mmsegmentation por lo que, para ello, he de modificar el código fuente de
+ese paquete. Para eso, tengo que desinstalar el paquete mmsegmentation instalado mediante pip e instalarlo en modo developer. En consecuencia, necesito descargarme
+el repositorio de mmsegmentation. Este repositorio ya lo tengo descargado. Voy a crear una rama en ese repo para irme a la versión que necesito (0.27.0) e instalarla
+de manera local en este contenedor. Me tengo que acordar de colocar ese repo en esa rama cuando esté haciendo uso de esta imagen.
