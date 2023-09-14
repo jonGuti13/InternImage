@@ -1,3 +1,5 @@
+segmentation/ops_dcnv3/
+segmentation/work_dirs/
 
 .idea/
 .DS_Store
