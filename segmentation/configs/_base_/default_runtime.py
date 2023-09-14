@@ -1,3 +1,4 @@
+default_scope = 'mmseg'
 # yapf:disable
 log_config = dict(
     interval=50,

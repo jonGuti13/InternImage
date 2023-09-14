@@ -8,9 +8,10 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
 ]
 pretrained = 'https://huggingface.co/OpenGVLab/InternImage/resolve/main/internimage_t_1k_224.pth'
+
 model = dict(
     backbone=dict(
-        _delete_=True,
+        _delete_=True,                                                      #NOTA 1A:Esto lo que hace es, en caso de que un parámetro esté definido más de una vez, reemplazar el viejo por el nuevo (el de este script).
         type='InternImage',
         core_op='DCNv3',
         channels=64,
@@ -25,14 +26,14 @@ model = dict(
         with_cp=False,
         out_indices=(0, 1, 2, 3),
         init_cfg=dict(type='Pretrained', checkpoint=pretrained)),
-    decode_head=dict(num_classes=150, in_channels=[64, 128, 256, 512]),
+    decode_head=dict(num_classes=150, in_channels=[64, 128, 256, 512]),     #NOTA 1B: De todos modos, aquí no se pone lo de _delete_=True pero también se actualiza el parámetro.
     auxiliary_head=dict(num_classes=150, in_channels=256),
     test_cfg=dict(mode='whole')
 )
-img_norm_cfg = dict(
-    mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
+img_norm_cfg = dict(mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 test_pipeline = [
     dict(type='LoadImageFromFile'),
+    dict(type='Resize', img_scale=(2048, 512), ratio_range=(0.5, 2.0)),
     dict(
         type='MultiScaleFlipAug',
         img_scale=(2048, 512),
