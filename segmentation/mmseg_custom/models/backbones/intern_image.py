@@ -86,7 +86,7 @@ class CrossAttention(nn.Module):
         attn_head_dim (int, optional): Dimension of attention head.
         out_dim (int, optional): Dimension of output.
     """
-    
+
     def __init__(self,
                  dim,
                  num_heads=8,
@@ -178,7 +178,7 @@ class AttentiveBlock(nn.Module):
         attn_head_dim (int, optional): Dimension of attention head. Default: None.
         out_dim (int, optional): Dimension of output. Default: None.
     """
-    
+
     def __init__(self,
                  dim,
                  num_heads,
@@ -551,6 +551,7 @@ class InternImage(nn.Module):
 
     def __init__(self,
                  core_op='DCNv3',
+                 in_channels = 3,
                  channels=64,
                  depths=[3, 4, 18, 5],
                  groups=[3, 6, 12, 24],
@@ -592,8 +593,7 @@ class InternImage(nn.Module):
         logger.info(f"level2_post_norm_block_ids: {level2_post_norm_block_ids}")
         logger.info(f"res_post_norm: {res_post_norm}")
 
-        in_chans = 3
-        self.patch_embed = StemLayer(in_chans=in_chans,
+        self.patch_embed = StemLayer(in_chans=in_channels,
                                      out_chans=channels,
                                      act_layer=act_layer,
                                      norm_layer=norm_layer)
