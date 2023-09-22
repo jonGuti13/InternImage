@@ -5,7 +5,7 @@
 # --------------------------------------------------------
 _base_ = [
     '../_base_/models/upernet_r50.py', '../_base_/datasets/hsi_drive.py',
-    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
+    '../_base_/default_runtime.py', '../_base_/schedules/schedule_jon.py'
 ]
 
 data_preprocessor = dict(type='SegDataPreProcessor', mean=None, std=None, bgr_to_rgb=None, pad_val=0, seg_pad_val=255)
@@ -46,7 +46,4 @@ lr_config = dict(_delete_=True, policy='poly',
                  power=1.0, min_lr=0.0, by_epoch=False)
 # By default, models are trained on 8 GPUs with 2 images per GPU
 data=dict(samples_per_gpu=8)
-runner = dict(type='IterBasedRunner')
-checkpoint_config = dict(by_epoch=False, interval=1000, max_keep_ckpts=1)
-evaluation = dict(interval=16000, metric='mIoU', save_best='mIoU')
 # fp16 = dict(loss_scale=dict(init_scale=512))
