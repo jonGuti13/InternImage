@@ -4,6 +4,15 @@
 # Licensed under The MIT License [see LICENSE for details]
 # --------------------------------------------------------
 
+#Obtener métricas de test
+#python test.py configs/hsidrive/upernet_internimage_t_512x1024_160k_hsidrive.py work_dirs/upernet_internimage_t_512x1024_160k_hsidrive/best_mIoU_iter_96000.pth --work-dir work_dirs/upernet_internimage_t_512x1024_160k_hsidrive/test_2023_09_25/ --eval mIoU --gpu-collect
+
+#Guardar imágenes segmentadas en un solo archivo .pkl --> Útil para matriz de confusión.
+#python test.py configs/hsidrive/upernet_internimage_t_512x1024_160k_hsidrive.py work_dirs/upernet_internimage_t_512x1024_160k_hsidrive/best_mIoU_iter_96000.pth --out work_dirs/upernet_internimage_t_512x1024_160k_hsidrive/test_2023_09_25/output.pkl
+
+#Generar matriz de confusión (estando en /workspace/InternImage/segmentation)
+#python ../../mmsegmentation/tools/confusion_matrix.py configs/hsidrive/upernet_internimage_t_512x1024_160k_hsidrive.py ./work_dirs/upernet_internimage_t_512x1024_160k_hsidrive/test_2023_09_25/output.pkl ./work_dirs/upernet_internimage_t_512x1024_160k_hsidrive/test_2023_09_25/
+
 import argparse
 import os
 import os.path as osp
@@ -197,7 +206,7 @@ def main():
         load_state_dict(model.module, checkpoint['state_dict'], strict=False)
     else:
         load_state_dict(model, checkpoint['state_dict'], strict=False)
-    
+
     if 'CLASSES' in checkpoint.get('meta', {}):
         model.CLASSES = checkpoint['meta']['CLASSES']
     else:
