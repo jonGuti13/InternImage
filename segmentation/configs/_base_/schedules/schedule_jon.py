@@ -1,9 +1,9 @@
 # optimizer
 optimizer = dict(
     type='AdamW',
-    lr=6e-05,
+    lr=1e-02,
     betas=(0.9, 0.999),
-    weight_decay=0.05,
+    weight_decay=0.001,
     constructor='CustomLayerDecayOptimizerConstructor',
     paramwise_cfg=dict(
         num_layers=30, layer_decay_rate=1.0, depths=[4, 4, 18, 4]))
@@ -13,14 +13,15 @@ lr_config = dict(
     policy='poly',
     warmup='linear',
     warmup_iters=1500,
-    warmup_ratio=1e-06,
+    warmup_ratio=1e-04,
     power=1.0,
     min_lr=0.0,
     by_epoch=False)
 # runtime settings
-runner = dict(type="EpochBasedRunner", max_epochs=50)
-checkpoint_config = dict(by_epoch=True, interval=10, max_keep_ckpts=1)
-evaluation = dict(interval=1, metric='mIoU', save_best='mIoU')
+
+runner = dict(type='IterBasedRunner', max_iters=140000)
+checkpoint_config = dict(by_epoch=False, interval=1400, max_keep_ckpts=1)
+evaluation = dict(interval=14000, metric='mIoU', pre_eval=True, save_best='mIoU')
 
 #En los .log.json que se generan cuando lanzo un entrenamiento se va guardando la información de entrenamiento/validación.
 #Voy a utilizar el ejemplo de schedule_160k.py para comentar algunas de las opciones.

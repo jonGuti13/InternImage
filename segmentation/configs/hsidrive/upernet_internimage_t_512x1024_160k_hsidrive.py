@@ -5,7 +5,7 @@
 # --------------------------------------------------------
 _base_ = [
     '../_base_/models/upernet_r50.py', '../_base_/datasets/hsi_drive.py',
-    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k.py'
+    '../_base_/default_runtime.py', '../_base_/schedules/schedule_jon.py'
 ]
 
 #pretrained = 'https://huggingface.co/OpenGVLab/InternImage/resolve/main/internimage_t_1k_224.pth'
@@ -58,21 +58,6 @@ model = dict(
                     use_sigmoid=False)),
     test_cfg=dict(mode='whole')
 )
-optimizer = dict(
-    _delete_=True, type='AdamW', lr=0.00006, betas=(0.9, 0.999), weight_decay=0.05,
-    constructor='CustomLayerDecayOptimizerConstructor',
-    paramwise_cfg=dict(num_layers=30, layer_decay_rate=1.0,
-                       depths=[4, 4, 18, 4]))
-lr_config = dict(_delete_=True, policy='poly',
-                 warmup='linear',
-                 warmup_iters=1500,
-                 warmup_ratio=1e-6,
-                 power=1.0, min_lr=0.0, by_epoch=False)
-
-
-runner = dict(type='IterBasedRunner')
-checkpoint_config = dict(by_epoch=False, interval=1000, max_keep_ckpts=1)
-evaluation = dict(interval=16000, metric='mIoU', save_best='mIoU')
 
 # By default, models are trained on 8 GPUs with 2 images per GPU
 data=dict(samples_per_gpu=32,
