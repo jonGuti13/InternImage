@@ -218,8 +218,8 @@ data = dict(
                 ])
         ],
         ignore_index=0))
-val_evaluator = dict(type='IoUMetric', iou_metrics=['pt'], ignore_index=0)
-test_evaluator = dict(type='IoUMetric', iou_metrics=['pt'], ignore_index=0)
+val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU'], ignore_index=0)
+test_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU'], ignore_index=0)
 log_config = dict(
     interval=50, hooks=[dict(type='TextLoggerHook', by_epoch=False)])
 dist_params = dict(backend='nccl')
@@ -230,9 +230,9 @@ workflow = [('train', 1)]
 cudnn_benchmark = True
 optimizer = dict(
     type='AdamW',
-    lr=6e-05,
+    lr=0.01,
     betas=(0.9, 0.999),
-    weight_decay=0.05,
+    weight_decay=0.001,
     constructor='CustomLayerDecayOptimizerConstructor',
     paramwise_cfg=dict(
         num_layers=30, layer_decay_rate=1.0, depths=[4, 4, 18, 4]))
@@ -241,14 +241,14 @@ lr_config = dict(
     policy='poly',
     warmup='linear',
     warmup_iters=1500,
-    warmup_ratio=1e-06,
+    warmup_ratio=0.0001,
     power=1.0,
     min_lr=0.0,
     by_epoch=False)
-runner = dict(type='IterBasedRunner', max_iters=160000)
-checkpoint_config = dict(by_epoch=False, interval=1000, max_keep_ckpts=1)
+runner = dict(type='IterBasedRunner', max_iters=140000)
+checkpoint_config = dict(by_epoch=False, interval=1400, max_keep_ckpts=1)
 evaluation = dict(
-    interval=16000, metric='mIoU', pre_eval=True, save_best='mIoU')
+    interval=14000, metric='mIoU', pre_eval=True, save_best='mIoU')
 work_dir = './work_dirs/upernet_internimage_t_512x1024_160k_hsidrive'
 gpu_ids = [0]
 auto_resume = False
