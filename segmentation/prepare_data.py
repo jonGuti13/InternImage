@@ -69,14 +69,14 @@ def changeFileNames(npy_folder, png_folder):
 
 def main():
     ap = argparse.ArgumentParser(description='Change name of annotations to have same name as images')
-    ap.add_argument('--base_folder', default='/work/jon/vault/phd_data/HSI-Drive_2.0_Jon')
-    ap.add_argument("--training_folds", nargs="+", type=int, required=True)
-    ap.add_argument("--validation_folds", nargs="+", type=int, required=True)
-    ap.add_argument("--test_folds", nargs="+", type=int, required=True)
-    ap.add_argument('--exp_number', type=str, required=True)
+    ap.add_argument('base_folder', default='/datos')
+    ap.add_argument("--training_folds", nargs="+")
+    ap.add_argument("--validation_folds", nargs="+")
+    ap.add_argument("--test_folds", nargs="+")
+    ap.add_argument('--exp_number', type=str)
     ap.add_argument('--preprocessing_code', default='208_400_TC_PN')
-    ap.add_argument('--npy_folder', help='path of the npy folder where images are stored', required=True)
-    ap.add_argument('--png_folder', help='path of the png folder where annotations are stored', required=True)
+    ap.add_argument('npy_folder', help='path of the npy folder where images are stored')
+    ap.add_argument('png_folder', help='path of the png folder where annotations are stored')
 
     args = ap.parse_args()
 
