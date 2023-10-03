@@ -4,13 +4,13 @@
 # Licensed under The MIT License [see LICENSE for details]
 # --------------------------------------------------------
 
-#Obtener métricas de test
+#Obtener metricas de test
 #python test.py configs/hsidrive/upernet_internimage_t_512x1024_160k_hsidrive.py work_dirs/upernet_internimage_t_512x1024_160k_hsidrive/best_mIoU_iter_96000.pth --work-dir work_dirs/upernet_internimage_t_512x1024_160k_hsidrive/test_2023_09_25/ --eval mIoU --gpu-collect
 
-#Guardar imágenes segmentadas en un solo archivo .pkl --> Útil para matriz de confusión.
+#Guardar imagenes segmentadas en un solo archivo .pkl --> Util para matriz de confusion.
 #python test.py configs/hsidrive/upernet_internimage_t_512x1024_160k_hsidrive.py work_dirs/upernet_internimage_t_512x1024_160k_hsidrive/best_mIoU_iter_96000.pth --out work_dirs/upernet_internimage_t_512x1024_160k_hsidrive/test_2023_09_25/output.pkl
 
-#Generar matriz de confusión (estando en /workspace/InternImage/segmentation)
+#Generar matriz de confusion (estando en /workspace/InternImage/segmentation)
 #python ../../mmsegmentation/tools/confusion_matrix.py configs/hsidrive/upernet_internimage_t_512x1024_160k_hsidrive.py ./work_dirs/upernet_internimage_t_512x1024_160k_hsidrive/test_2023_09_25/output.pkl ./work_dirs/upernet_internimage_t_512x1024_160k_hsidrive/test_2023_09_25/
 
 import argparse
