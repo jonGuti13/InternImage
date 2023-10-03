@@ -1,5 +1,6 @@
 El comando para crear el contenedor que me permite trabajar con este repositorio es:
-nvidia-docker run -it --rm -v /media/jon/DATUAK/Jon/phd/Pytorch-AI-tutorials/openmm:/workspace -v /media/jon/DATUAK/Jon/phd_data/:/data --ipc=host nvcr.io/nvidia/pytorch:21.02-py3-jon-internImage
+En Orion: nvidia-docker run -it --rm -v /work/jon/vault/phd/Pytorch-AI-tutorials/openmm/:/workspace -v /work/jon/vault/phd_data/HSI-Drive_2.0_Jon/openmm/:/data -v /work/jon/vault/phd_data/HSI-Drive_2.0_Jon/:/datos --ipc=host nvcr.io/nvidia/pytorch:21.02-py3-jon-internImage
+En mi ordenador:nvidia-docker run -it --rm -v /media/jon/DATUAK/Jon/phd/Pytorch-AI-tutorials/openmm:/workspace -v /media/jon/DATUAK/Jon/phd_data/:/data -v /media/jon/DATUAK/Jon/phd/00BaseDeDatos/HSI-Drive_2.0_Jon/:/datos --ipc=host nvcr.io/nvidia/pytorch:21.02-py3-jon-internImage
 
 Esta imagen la he creado modificando la original (nvcr.io/nvidia/pytorch:21.02-py3) según lo que pone en la guía de instalación del repositorio.
 Por ello es fundamental activar el entorno adecuado: conda activate internimage
@@ -10,3 +11,34 @@ IMPORTANTÍSIMO: Necesito "dar de alta" nuestra base de datos en los registros d
 ese paquete. Para eso, tengo que desinstalar el paquete mmsegmentation instalado mediante pip e instalarlo en modo developer. En consecuencia, necesito descargarme
 el repositorio de mmsegmentation. Este repositorio ya lo tengo descargado. Voy a crear una rama en ese repo para irme a la versión que necesito (0.27.0) e instalarla
 de manera local en este contenedor. Me tengo que acordar de colocar ese repo en esa rama cuando esté haciendo uso de esta imagen.
+
+conda list | grep mm -->
+
+mmcls                     0.25.0                   pypi_0    pypi
+mmcv-full                 1.5.0                    pypi_0    pypi
+mmdet                     2.28.1                   pypi_0    pypi
+mmsegmentation            0.27.0                    dev_0    <develop>
+
+#ENTRENAMIENTOS:
+Los entrenamientos los lanzo ubicándome en /workspace/InternImage/segmentation con el comando:
+`python train.py con configs/hsidrive/upernet_internimage_t_512x1024_160k_hsidrive.py`
+NOTA: Tendría que cambiar el nombre del modelo porque he mantenido el nombre original del de Cityscapes y el contenido no tiene nada que ver el uno con el otro.
+
+Al lanzar el entrenamiento, se genera un .log.json y un log en /workspace/segmentation/work_dirs/<nombre_del_archivo_de_entrenamiento>/ además de un <nombre_del_archivo_de_entrenamiento.py>:
+- El .log.json contiene información sobre el estado del entrenamiento (epoch, iter, lr_rate, loss...)
+- El .log contiene también información sobre el script que se ha estado ejecutando. Es más ilustrativo.
+- El .py es similar al archivo que se llama para ejecutar el entrenamiento con la diferencia de que no es modular, es decir, incluye en un solo script todas las características del entrenamiento.
+Esto te permite ver si ha habido algún error o algún parámetro definido es incorrecto.
+
+Entrenamientos de referencia:
+- 20230922_191850: el learning rate inicial es muy bajo (estaba hecho para partir de un modelo preentrenado) --> Best mIoU is 0.4362 at 96000 iter.
+- 20230927_080911: es el entrenamiento de referencia (corresponde al primer fold) --> Best mIoU is 0.9058 at 112000 iter.
+- 20230929_080830: es exactamente el mismo entrenamiento que el anterior (quería ver la variabilidad entre inicializaciones) --> Best mIoU is 0.8992 at 28000 iter.
+
+
+#TEST:
+En el propio test.py indico cómo llevar a cabo los test tanto para generar imagenes, metricas o matriz de confusion
+Modificar el link simbólico para que apunte a la carpeta de test que queremos
+
+ln -s /datos/Fold5/Cube_208_400_TC_PN_Npy/ /data/HSI-Drive/2.0/openmm/images/test
+ln -s /datos/Fold5/Labels_208_400/Exp104/ /data/HSI-Drive/2.0/openmm/annotations/test
