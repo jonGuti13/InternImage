@@ -1,3 +1,11 @@
+#Este script es necesario ejecutarlo cada vez que se cambia de Folds de train/val/test.
+#Hay dos carpetas que son /data/images/(training/validation/test) y /data/annotations/(training/validation/test) en las cuales tienen que estar los archivos físicamente colocados.
+#Por eso, este script se encarga de vaciar el contenido de esas carpetas, copiar los archivos necesarios a las carpetas de training (3 folds), validation (1 fold) y test (1 fold) y
+#renombrar esos archivos para que las imágenes y las etiquetas tengan el mismo nombre.
+
+#python3 prepare_data.py /datos --training_folds 1 2 3 --validation_folds 4 --test_folds 5 --exp_number 104 /data/images /data/annotations/
+
+
 import os
 import glob
 import argparse
@@ -70,9 +78,9 @@ def changeFileNames(npy_folder, png_folder):
 def main():
     ap = argparse.ArgumentParser(description='Change name of annotations to have same name as images')
     ap.add_argument('base_folder', default='/datos')
-    ap.add_argument("--training_folds", nargs="+")
-    ap.add_argument("--validation_folds", nargs="+")
-    ap.add_argument("--test_folds", nargs="+")
+    ap.add_argument("--training_folds", nargs="+", required=True)
+    ap.add_argument("--validation_folds", nargs="+", required=True)
+    ap.add_argument("--test_folds", nargs="+", required=True)
     ap.add_argument('--exp_number', type=str)
     ap.add_argument('--preprocessing_code', default='208_400_TC_PN')
     ap.add_argument('npy_folder', help='path of the npy folder where images are stored')
@@ -104,9 +112,6 @@ def main():
     changeFileNames(args.npy_folder + 'training/', args.png_folder + 'training/')
     changeFileNames(args.npy_folder + 'validation/', args.png_folder + 'validation/')
     changeFileNames(args.npy_folder + 'test/', args.png_folder + 'test/')
-
-    #python3 prepare_data.py --training_folds 1 2 3 --validation_folds 4 --npy_folder /work/jon/vault/phd_data/HSI-Drive_2.0_Jon/openmm/images/ --png_folder /work/jon/vault/phd_data/HSI-Drive_2.0_Jon/openmm/annotations/ --exp_number 104
-
 
 if __name__ == '__main__':
     main()
