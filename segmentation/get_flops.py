@@ -1,4 +1,8 @@
 # Copyright (c) OpenMMLab. All rights reserved.
+
+#Ejemplo de uso del script (ubicandome en /workspace/mmsegmentation)
+#python tools/get_flops.py ../InternImage/InternImage/segmentation/work_dirs/upernet_internimage_t_512x1024_160k_hsidrive/upernet_internimage_t_512x1024_160k_hsidrive.py --shape 25 192 384
+
 import argparse
 
 import numpy as np
@@ -66,7 +70,7 @@ def get_flops(model, input_shape):
     flops = flops + temp
     return flops_to_string(flops), params_to_string(params)
 
-    
+
 if __name__ == '__main__':
 
     args = parse_args()
@@ -93,7 +97,7 @@ if __name__ == '__main__':
         cfg.model,
         train_cfg=cfg.get('train_cfg'),
         test_cfg=cfg.get('test_cfg'))
-    
+
     if torch.cuda.is_available():
         model.cuda()
     model.eval()
